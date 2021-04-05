@@ -1,0 +1,1 @@
+this repo is to build and push image to ecr and then deploy it to the k8s cluster
