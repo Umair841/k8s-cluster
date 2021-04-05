@@ -23,6 +23,17 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - echo Writing image definitions file...
       - printf '[{"name":"app","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - echo here actual code is working.
+      - echo this is post-build stage to upgrade helm on k8s CLuster .
+      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl && openssl sha1 -sha256 kubectl && chmod +x ./kubectl && mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+      - mkdir ~/.kube
+      - aws s3 cp s3://umair-k8s-kops-store/config .
+      - cp config ~/.kube/
+      - OUTPUT=$(pwd)
+      - cd /usr/local/bin && PATH=$PATH:/usr/local/bin && curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+      - cd $OUTPUT/Helmchart/
+      - helm upgrade demo .
+      - echo successfully upgraded helm to new version with latest image
 artifacts:
   files:
     - imagedefinitions.json
