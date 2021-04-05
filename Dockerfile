@@ -1,4 +1,4 @@
-FROM python:3.4-alpine
+FROM python
 
 WORKDIR /work
 
